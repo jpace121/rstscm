@@ -1,10 +1,11 @@
 fn main() {
-    let test = "(abc)";
-    let token = tokenize(test.to_string());
-    println!("{}",token)
+    let test = "(abc)".to_string();
+    let token = tokenize(&test);
+    
 }
 
-fn tokenize(chars: String) -> Vec<String> {
-    let with_sapace = chars.replace("(", "( ");
-    chars.as_slice().split(' ').collect()
+fn tokenize<'s>(chars: &'s String) -> Vec<&'s str> {
+    let with_space: &'s String = chars.replace("(", "( ");
+    let vected: Vec<&'s str>  = with_space.as_slice().split(' ').collect();
+    return vected
 }
