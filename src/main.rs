@@ -2,6 +2,13 @@
 extern crate regex;
 use regex::Regex;
 
+enum schmAtom {
+    Int(i32),
+    Float(f32),
+    Strng(String),
+    Symb(String)
+}
+
 fn main() {
 
     let test = "(abc)".to_string();
@@ -28,3 +35,8 @@ fn tokenize(input: & String) -> Vec<String>{
 
     tokens
 }
+
+fn read_from_tokens(){
+}
+
+
