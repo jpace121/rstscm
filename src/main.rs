@@ -12,28 +12,38 @@ enum schmAtom {
 fn main() {
 
     let test = "(abc)".to_string();
-    let tokened: Vec<String> = tokenize(&test);
+    let tokened = tokenize(&test);
     
     println!("{:?}",tokened)
 }
 
-fn tokenize(input: & String) -> Vec<String>{
-    let mut tokens = vec![];
+fn tokenize(input: & String) -> Vec<&str>{
+    //let mut tokens = vec![];
     
     let re1 = Regex::new(r"\(").unwrap();
     let re2 = Regex::new(r"\)").unwrap();
-    let mut after = re1.replace_all(input,"( ");
-    after = re2.replace_all(after.as_slice(), " )");
+    /* This doesn't compile because `after` only lives in the function, 
+       but we keep using it's adress all over the place. 
+       What I don't see is how to make after "live" longer.
+       In C, I would allocate to heap, and manually manage lifetime
+       from there. Alternatively, I would pass in something with lifetime
+       I wanted and fill that memory. Or maybe try a Copy somewhere?
 
-    let after_sliced: &str = after.as_slice();
-    let split = after_sliced.split(" ");
+       Maybe I need to decalre after as an Rc?
+     */
+    let mut after: String = re1.replace_all(input,"( ");
+    after = re2.replace_all(&after, " )");
+
+    let split = after.split(" "); //split is an iterator
+    split.collect::<Vec<&str>>()
 
     //I bet there is a better way to do this, but I keep getting lifetime errors.
-    for token in split {
-        tokens.push(token.to_string());
-    }
+    /*for token in split {
+        tokens.push(token);
+    }*/
 
-    tokens
+    //tokens
+    
 }
 
 fn read_from_tokens(){
