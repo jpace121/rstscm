@@ -6,7 +6,13 @@ enum schmAtom {
     Int(i32),
     Float(f32),
     Strng(String),
-    Symb(String)
+    Symb(String),
+    Func(Fn(schmList)->schmList)
+}
+
+enum schmList {
+    Cons(Box<schmAtom>, Box<schmList>),
+    Nil
 }
 
 fn main() {
@@ -26,7 +32,8 @@ fn tokenize(input: String) -> Vec<String>{
     //BUT it actaully just forces the copy and move of the string
 }
 
-fn read_from_tokens(){
+fn read_from_tokens(tokens:Vec<String>) -> schmList{
+    
 }
 
 #[cfg(test)]
@@ -37,6 +44,3 @@ fn test_tokenize() {
     assert_eq!(tokenize(test_input), 
                vec!("(","a","b","c", ")"));
 }
-
-
-
