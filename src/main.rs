@@ -30,30 +30,56 @@ fn atom(token: String) -> schmAtom {
     //Figure out what type a token is representing.
     
     // Probably more idiomatic way?
+    //Calling both from the get go seesm silly, 
+    //and using unwrap is proabbly bad.
     let intNum = token.parse::<i32>();
     let floatNum = token.parse::<f32>();
 
     if intNum.is_ok() {
-        let x  = match intNum {
-            Ok(x) => x
-        };
+        let x = intNum.unwrap();
         return schmAtom::Int(x)
     } else if floatNum.is_ok() {
-        let x = match floatNum {
-            Ok(x) => x
-        };
+        let x = floatNum.unwrap();
         return schmAtom::Float(x)
     } else { //must be string...
-        //TODO: differe between strings and symbols
-        return schmAtom::String(token)
+    //TODO: There is no way the following line is idiomatic
+        if match token.as_bytes()[0] as char {'\"' => true, _ => false  } { 
+            return schmAtom::String(token)
+        } else {
+            return schmAtom::Symb(token)
+        }
     }
 
 }
 
 fn read_from_tokens(){
+
 }
 
 #[cfg(test)]
+
+#[test]
+fn test_atom(){
+    let test_string = "\"ab\"".to_string();
+    let test_float = "1.0".to_string();
+    let test_int = "1".to_string();
+    let test_symb = "hi".to_string();
+
+    let string_atom = atom(test_string);
+    let float_atom = atom(test_float);
+    let int_atom = atom(test_int);
+    let symb_atom = atom(test_symb);
+
+    let res = match (string_atom, float_atom, int_atom, symb_atom) {
+        (schmAtom::String(x), schmAtom::Float(y), schmAtom::Int(z), 
+                schmAtom::Symb(l),) 
+            => { (x,y,z,l) == ("\"ab\"".to_string(),1.0,1,"hi".to_string())},
+          _ => false 
+    };
+
+    assert!(res,true)
+
+}
 
 #[test]
 fn test_tokenize() {
