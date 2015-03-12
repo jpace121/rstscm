@@ -14,7 +14,7 @@ fn main() {
 }
 
 fn tokenize(input: String) -> Vec<String>{
-    
+    // Split input string into smaller tokens.
     let re1 = Regex::new(r"\(").unwrap();
     let re2 = Regex::new(r"\)").unwrap();
     let mut after: String = re1.replace_all(&input,"( ");
