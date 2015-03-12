@@ -7,12 +7,13 @@ enum schmAtom {
     Float(f32),
     Strng(String),
     Symb(String),
-    Func(Fn(schmList)->schmList)
+    Func(Fn(schmList)->schmList),
+    Nil
 }
 
-enum schmList {
-    Cons(Box<schmAtom>, Box<schmList>),
-    Nil
+struct schmList {
+    car : Box<schmAtom>,
+    cdr : Box<schmList>
 }
 
 fn main() {
@@ -20,7 +21,8 @@ fn main() {
 }
 
 fn tokenize(input: String) -> Vec<String>{
-    
+    // Trasnforms input string -> vector of individual strings to 
+    // be evaluated later.
     let re1 = Regex::new(r"\(").unwrap();
     let re2 = Regex::new(r"\)").unwrap();
     let mut after: String = re1.replace_all(&input,"( ");
@@ -33,7 +35,10 @@ fn tokenize(input: String) -> Vec<String>{
 }
 
 fn read_from_tokens(tokens:Vec<String>) -> schmList{
-    
+
+    for elem in tokens.iter() {
+       //would be easier as a cond statement?
+       }
 }
 
 #[cfg(test)]
