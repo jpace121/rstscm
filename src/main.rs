@@ -5,7 +5,7 @@ use regex::Regex;
 enum schmAtom {
     Int(i32),
     Float(f32),
-    Strng(String),
+    String(String),
     Symb(String)
 }
 
@@ -24,6 +24,30 @@ fn tokenize(input: String) -> Vec<String>{
     split.map(|x|{x.to_string()}).collect::<Vec<String>>()
     //^to `.to_string` seems kind of hackish...
     //BUT it actaully just forces the copy and move of the string
+}
+
+fn atom(token: String) -> schmAtom {
+    //Figure out what type a token is representing.
+    
+    // Probably more idiomatic way?
+    let intNum = token.parse::<i32>();
+    let floatNum = token.parse::<f32>();
+
+    if intNum.is_ok() {
+        let x  = match intNum {
+            Ok(x) => x
+        };
+        return schmAtom::Int(x)
+    } else if floatNum.is_ok() {
+        let x = match floatNum {
+            Ok(x) => x
+        };
+        return schmAtom::Float(x)
+    } else { //must be string...
+        //TODO: differe between strings and symbols
+        return schmAtom::String(token)
+    }
+
 }
 
 fn read_from_tokens(){
