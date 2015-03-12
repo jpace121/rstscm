@@ -42,17 +42,16 @@ fn atom(token: String) -> schmAtom {
         let x = floatNum.unwrap();
         return schmAtom::Float(x)
     } else { //must be string...
-    //TODO: There is no way the following line is idiomatic
-        if match token.as_bytes()[0] as char {'\"' => true, _ => false  } { 
-            return schmAtom::String(token)
-        } else {
-            return schmAtom::Symb(token)
+        match token.as_bytes()[0] as char {
+            '\"' => return schmAtom::String(token),
+              _  => return schmAtom::Symb(token)
         }
     }
 
 }
 
 fn read_from_tokens(){
+    // Reads the expression from the 
 
 }
 
