@@ -26,12 +26,15 @@ fn tokenize(input: String) -> Vec<String>{
     //BUT it actaully just forces the copy and move of the string
 }
 
+fn read_from_tokens(tokens : Vec<schmAtom>){
+    // Reads expressions from tokens.
+    
+
+}
+
 fn atom(token: String) -> schmAtom {
     //Figure out what type a token is representing.
     
-    // Probably more idiomatic way?
-    //Calling both from the get go seesm silly, 
-    //and using unwrap is proabbly bad.
     let intNum = token.parse::<i32>();
     let floatNum = token.parse::<f32>();
 
@@ -50,10 +53,6 @@ fn atom(token: String) -> schmAtom {
 
 }
 
-fn read_from_tokens(){
-    // Reads the expression from the 
-
-}
 
 #[cfg(test)]
 
