@@ -6,7 +6,8 @@ enum schmAtom {
     Int(i32),
     Float(f32),
     String(String),
-    Symb(String)
+    Symb(String),
+    Vec(Vec<schmAtom>)
 }
 
 fn main() {
@@ -26,10 +27,26 @@ fn tokenize(input: String) -> Vec<String>{
     //BUT it actaully just forces the copy and move of the string
 }
 
-fn read_from_tokens(tokens : Vec<schmAtom>){
+fn read_from_tokens(mut tokens : Vec<String>)->schmAtom{
     // Reads expressions from tokens.
-    
+    // Basically traight tolen from lisp.py
 
+    let token = tokens.pop().unwrap(); //should try to reduce unwraps
+
+    match token.as_slice() {
+        "(" => {
+            let mut L = vec!();
+            loop{ //so dirty... (Is there a better way to recurse this?)
+                match tokens[0].as_slice() {
+                    ")" => break,
+                     _ => L.push(read_from_tokens(tokens)) //<- need to unrecurse this
+                }
+            }
+            tokens.pop(); //removes the ')' char
+            return schmAtom::Vec(L);
+        },
+         _  => return atom(token) 
+    }
 }
 
 fn atom(token: String) -> schmAtom {
