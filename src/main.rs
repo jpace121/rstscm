@@ -35,7 +35,7 @@ fn read_from_tokens(tokens : &mut Vec<String>)->schmAtom{
 
     match token.as_slice() {
         "(" => {
-            let mut L = vec!();
+            let mut L = vec!(); //uhh...
             loop{ //so dirty... (Is there a better way to recurse this?)
                 match tokens[0].as_slice() {
                     ")" => break,
@@ -70,6 +70,11 @@ fn atom(token: String) -> schmAtom {
 
 }
 
+fn parse(program : String) -> schmAtom {
+    let mut tokens: Vec<String> = tokenize(program);
+    read_from_tokens(&mut tokens)
+}
+
 
 #[cfg(test)]
 
@@ -102,6 +107,4 @@ fn test_tokenize() {
     assert_eq!(tokenize(test_input), 
                vec!("(","a","b","c", ")"));
 }
-
-
 
