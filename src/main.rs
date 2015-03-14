@@ -2,12 +2,12 @@
 extern crate regex;
 use regex::Regex;
 
-enum schmAtom {
+enum SchmAtom {
     Int(i32),
     Float(f32),
     String(String),
     Symb(String),
-    Vec(Vec<schmAtom>)
+    Vec(Vec<SchmAtom>)
 }
 
 fn main() {
@@ -27,7 +27,7 @@ fn tokenize(input: String) -> Vec<String>{
     //BUT it actaully just forces the copy and move of the string
 }
 
-fn read_from_tokens(tokens : &mut Vec<String>)->schmAtom{
+fn read_from_tokens(tokens : &mut Vec<String>)->SchmAtom{
     // Reads expressions from tokens.
     // Basically traight tolen from lisp.py
 
@@ -35,42 +35,42 @@ fn read_from_tokens(tokens : &mut Vec<String>)->schmAtom{
 
     match token.as_slice() {
         "(" => {
-            let mut L = vec!(); //uhh...
+            let mut l = vec!(); //uhh...
             loop{ //so dirty... (Is there a better way to recurse this?)
                 match tokens[0].as_slice() {
                     ")" => break,
-                     _ => L.push(read_from_tokens(tokens)) //<- need to unrecurse this
+                     _ => l.push(read_from_tokens(tokens)) //<- need to unrecurse this
                 }
             }
             tokens.pop(); //removes the ')' char
-            return schmAtom::Vec(L);
+            return SchmAtom::Vec(l);
         },
          _  => return atom(token) 
     }
 }
 
-fn atom(token: String) -> schmAtom {
+fn atom(token: String) -> SchmAtom {
     //Figure out what type a token is representing.
     
-    let intNum = token.parse::<i32>();
-    let floatNum = token.parse::<f32>();
+    let int_num = token.parse::<i32>();
+    let float_num = token.parse::<f32>();
 
-    if intNum.is_ok() {
-        let x = intNum.unwrap();
-        return schmAtom::Int(x)
-    } else if floatNum.is_ok() {
-        let x = floatNum.unwrap();
-        return schmAtom::Float(x)
+    if int_num.is_ok() {
+        let x = int_num.unwrap();
+        return SchmAtom::Int(x)
+    } else if float_num.is_ok() {
+        let x = float_num.unwrap();
+        return SchmAtom::Float(x)
     } else { //must be string...
         match token.as_bytes()[0] as char {
-            '\"' => return schmAtom::String(token),
-              _  => return schmAtom::Symb(token)
+            '\"' => return SchmAtom::String(token),
+              _  => return SchmAtom::Symb(token)
         }
     }
 
 }
 
-fn parse(program : String) -> schmAtom {
+fn parse(program : String) -> SchmAtom {
     let mut tokens: Vec<String> = tokenize(program);
     read_from_tokens(&mut tokens)
 }
@@ -91,8 +91,8 @@ fn test_atom(){
     let symb_atom = atom(test_symb);
 
     let res = match (string_atom, float_atom, int_atom, symb_atom) {
-        (schmAtom::String(x), schmAtom::Float(y), schmAtom::Int(z), 
-                schmAtom::Symb(l),) 
+        (SchmAtom::String(x), SchmAtom::Float(y), SchmAtom::Int(z), 
+                SchmAtom::Symb(l),) 
             => { (x,y,z,l) == ("\"ab\"".to_string(),1.0,1,"hi".to_string())},
           _ => false 
     };
