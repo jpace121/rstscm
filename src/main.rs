@@ -27,7 +27,7 @@ fn tokenize(input: String) -> Vec<String>{
     //BUT it actaully just forces the copy and move of the string
 }
 
-fn read_from_tokens(mut tokens : Vec<String>)->schmAtom{
+fn read_from_tokens(tokens : &mut Vec<String>)->schmAtom{
     // Reads expressions from tokens.
     // Basically traight tolen from lisp.py
 
