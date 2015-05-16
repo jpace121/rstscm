@@ -1,5 +1,5 @@
-#![feature(core)] //this should be removed before out of beta
 extern crate regex;
+use std::collections::HashMap;
 use regex::Regex;
 
 enum SchmAtom {
@@ -7,7 +7,8 @@ enum SchmAtom {
     Float(f32),
     String(String),
     Symb(String),
-    Vec(Vec<SchmAtom>)
+    Vec(Vec<SchmAtom>),
+    Func(Box<Fn(SchmAtom) -> SchmAtom>)
 }
 
 fn main() {
@@ -31,13 +32,13 @@ fn read_from_tokens(tokens : &mut Vec<String>)->SchmAtom{
     // Reads expressions from tokens.
     // Basically traight tolen from lisp.py
 
-    let token = tokens.pop().unwrap(); //should try to reduce unwraps
+    let token : String = tokens.pop().unwrap(); //should try to reduce unwraps
 
-    match token.as_slice() {
+    match token.as_ref() {
         "(" => {
             let mut l = vec!(); //uhh...
             loop{ //so dirty... (Is there a better way to recurse this?)
-                match tokens[0].as_slice() {
+                match tokens[0].as_ref() {
                     ")" => break,
                      _ => l.push(read_from_tokens(tokens)) //<- need to unrecurse this
                 }
@@ -75,6 +76,9 @@ fn parse(program : String) -> SchmAtom {
     read_from_tokens(&mut tokens)
 }
 
+/*fn standard_env() -> HashMap<String,SchmAtom>{
+    //Builds a standard scheme environment.
+}*/
 
 #[cfg(test)]
 
